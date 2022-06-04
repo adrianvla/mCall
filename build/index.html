@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>mCall</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.7.0/gsap.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+</head>
+
+<body>
+    <div class="popup-c" style='display:none;opacity:0'>
+        <div class="popup" style='transform:scale(0);'>
+
+            <!--div-- class="person-connect">
+                <div class="person-connect-name">
+                    <span class='prcn'>Adri Vla</span>
+                    <span class='prcninfo'>Would Like To Connect To You</span>
+                    <span class='prcninfon'>If You Deny, you won't be able to hear,see and chat with them</span>
+                </div>
+                <div class="person-connect-r">
+                    <div class="prc-acc">
+                        <div class="btn">
+                            <div>
+                                Accept
+                            </div>
+                        </div>
+                    </div>
+                    <div class="prc-deny">
+                        <div class="btn">
+                            <div>
+                                Deny
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div-->
+
+        </div>
+    </div>
+    <div class="connecting" style='display: flex;'>
+        PLEASE WAIT,CONNECTING...
+    </div>
+
+    <div class="center">
+        <div class="header">
+            <div class="">mCall</div>
+        </div>
+        <div class="hero-c">
+            <div class="hero">
+                <div class="info">
+                    <span>mCall.</span>
+                    <span>End To End Encrypted.</span>
+                    <span>Choose Who You Want To See You.*</span>
+                </div>
+            </div>
+            <div class="cont">
+                <input type="text" class='cinput' style='display:none' placeholder='Enter Room Code'>
+                <div><button class='cbtn btn' style='display:none'>Connect To Room/Create Room</button></div>
+                <div class="lbb">
+                    <button class='login btn'>Login</button>
+                </div>
+            </div>
+        </div>
+        <div class="footer">
+            <span class='inf'>*When a peer connects, you will be asked if you want this peer to see and hear you.</span>
+        </div>
+    </div>
+
+    <video id="localVideo" autoplay muted
+        style='opacity:0;pointer-events:none;position:absolute;width:640px;height:480px;'></video>
+        <video id="screensvid" autoplay muted
+        style='opacity:0;pointer-events:none;position:absolute;width:1920px;height:1080px;'></video>
+    <canvas id='videoprocess' width='1280' height='720' style='display:none'></canvas>
+    <canvas id='nocam' width='640' height='480' style='display:none'></canvas>
+    <canvas id='screens' width='853' height='480' style='display:none;position:absolute;z-index:101001230103'></canvas>
+    <div class='precall' style='display:none'>
+        <div class="cen">
+            <div class="vc">
+
+                <canvas id='preview' style='width:640px;height:480px;'></canvas>
+                <div class="vid">
+                    <div class='bc'>
+                        <div class="btnc">
+                            <div class="btn mic mute">
+                                <div><svg xmlns="http://www.w3.org/2000/svg" class='unmuted'
+                                        enable-background="new 0 0 24 24" height="24px" viewBox="0 0 24 24" width="24px"
+                                        fill="#FFFFFF">
+                                        <g>
+                                            <rect fill="none" height="24" width="24" />
+                                            <rect fill="none" height="24" width="24" />
+                                            <rect fill="none" height="24" width="24" />
+                                        </g>
+                                        <g>
+                                            <g />
+                                            <g>
+                                                <path
+                                                    d="M12,14c1.66,0,3-1.34,3-3V5c0-1.66-1.34-3-3-3S9,3.34,9,5v6C9,12.66,10.34,14,12,14z" />
+                                                <path
+                                                    d="M17,11c0,2.76-2.24,5-5,5s-5-2.24-5-5H5c0,3.53,2.61,6.43,6,6.92V21h2v-3.08c3.39-0.49,6-3.39,6-6.92H17z" />
+                                            </g>
+                                        </g>
+                                    </svg>
+                                    <svg xmlns="http://www.w3.org/2000/svg" style='display:none' class='muted'
+                                        height="24px" viewBox="0 0 24 24" width="24px" fill="#FFFFFF">
+                                        <path d="M0 0h24v24H0V0z" fill="none" />
+                                        <path
+                                            d="M10.8 4.9c0-.66.54-1.2 1.2-1.2s1.2.54 1.2 1.2l-.01 3.91L15 10.6V5c0-1.66-1.34-3-3-3-1.54 0-2.79 1.16-2.96 2.65l1.76 1.76V4.9zM19 11h-1.7c0 .58-.1 1.13-.27 1.64l1.27 1.27c.44-.88.7-1.87.7-2.91zM4.41 2.86L3 4.27l6 6V11c0 1.66 1.34 3 3 3 .23 0 .44-.03.65-.08l1.66 1.66c-.71.33-1.5.52-2.31.52-2.76 0-5.3-2.1-5.3-5.1H5c0 3.41 2.72 6.23 6 6.72V21h2v-3.28c.91-.13 1.77-.45 2.55-.9l4.2 4.2 1.41-1.41L4.41 2.86z" />
+                                    </svg></div>
+                            </div>
+                        </div>
+                        <div class="btnc">
+                            <div class="btn video swvid">
+                                <div><svg xmlns="http://www.w3.org/2000/svg" class='unmutedvid' height="24px"
+                                        viewBox="0 0 24 24" width="24px" fill="#FFFFFF">
+                                        <path d="M0 0h24v24H0V0z" fill="none" />
+                                        <path
+                                            d="M15 8v8H5V8h10m1-2H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4V7c0-.55-.45-1-1-1z" />
+                                    </svg>
+                                    <svg xmlns="http://www.w3.org/2000/svg" style='display:none' class='mutedvid'
+                                        height="24px" viewBox="0 0 24 24" width="24px" fill="#FFFFFF">
+                                        <path d="M0 0h24v24H0V0z" fill="none" />
+                                        <path
+                                            d="M9.56 8l-2-2-4.15-4.14L2 3.27 4.73 6H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.21 0 .39-.08.55-.18L19.73 21l1.41-1.41-8.86-8.86L9.56 8zM5 16V8h1.73l8 8H5zm10-8v2.61l6 6V6.5l-4 4V7c0-.55-.45-1-1-1h-5.61l2 2H15z" />
+                                    </svg></div>
+                            </div>
+                        </div>
+                        <div class="btnc">
+                            <div class="btn connect">
+                                <div>Connect</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="txt">
+                <div class="btns">
+                    <div class="shh">
+                        <div class="bcc">Connecting To: <br> <span class='ROOMIDSHOW'>ROOMIDSHOW</span> </div>
+                    </div>
+                    <!--div-- class='bc'>
+                        <div class="btnc"><div class="btn mic"><div><svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="24px" viewBox="0 0 24 24" width="24px" fill="#FFFFFF"><g><rect fill="none" height="24" width="24"/><rect fill="none" height="24" width="24"/><rect fill="none" height="24" width="24"/></g><g><g/><g><path d="M12,14c1.66,0,3-1.34,3-3V5c0-1.66-1.34-3-3-3S9,3.34,9,5v6C9,12.66,10.34,14,12,14z"/><path d="M17,11c0,2.76-2.24,5-5,5s-5-2.24-5-5H5c0,3.53,2.61,6.43,6,6.92V21h2v-3.08c3.39-0.49,6-3.39,6-6.92H17z"/></g></g></svg></div></div></div>
+                    <div class="btnc"><div class="btn video"><div><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#FFFFFF"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M15 8v8H5V8h10m1-2H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4V7c0-.55-.45-1-1-1z"/></svg></div></div></div><div class="btnc"><div class="btn connect"><div>Connect</div></div></div>
+                    </div-->
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="conf" style='display:none'>
+        <div class="">
+
+            <div class="prev">
+                <div class="prevvi">
+                    <video autoplay id='prev' muted></video>
+                </div>
+            </div>
+            <div class="screen-preview-c" style='display:none;'>
+                <div class="screen-preview">
+                    <video autoplay id='screen-preview-vid' muted></video>
+                </div>
+            </div>
+            
+        </div>
+        <div class="buttons">
+            <div class="rmidpopup">
+                <div class="rmidp">
+                    <div class="link">
+                        Copy Link
+                    </div>
+                </div>
+                <div class="rmidp">
+                    <div class="mail">
+                        Email Link
+                    </div>
+                </div>
+
+            </div>
+            <div class="rmid">
+                <div class="rmida">
+
+                    <div class="rmidb chv"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24"
+                            width="24px" fill="#FFFFFF">
+                            <path d="M24 24H0V0h24v24z" fill="none" opacity=".87" />
+                            <path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6-1.41-1.41z" /></svg></div>
+                    <div class="rmidb rmiddply">asdf</div>
+                </div>
+            </div>
+            <div class='bc'>
+
+                <div class="btnc">
+
+                    <div class="btn mute">
+                        <div><svg xmlns="http://www.w3.org/2000/svg" class='unmuted' enable-background="new 0 0 24 24"
+                                height="24px" viewBox="0 0 24 24" width="24px" fill="#FFFFFF">
+                                <g>
+                                    <rect fill="none" height="24" width="24" />
+                                    <rect fill="none" height="24" width="24" />
+                                    <rect fill="none" height="24" width="24" />
+                                </g>
+                                <g>
+                                    <g />
+                                    <g>
+                                        <path
+                                            d="M12,14c1.66,0,3-1.34,3-3V5c0-1.66-1.34-3-3-3S9,3.34,9,5v6C9,12.66,10.34,14,12,14z" />
+                                        <path
+                                            d="M17,11c0,2.76-2.24,5-5,5s-5-2.24-5-5H5c0,3.53,2.61,6.43,6,6.92V21h2v-3.08c3.39-0.49,6-3.39,6-6.92H17z" />
+                                    </g>
+                                </g>
+                            </svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" style='display:none' class='muted' height="24px"
+                                viewBox="0 0 24 24" width="24px" fill="#FFFFFF">
+                                <path d="M0 0h24v24H0V0z" fill="none" />
+                                <path
+                                    d="M10.8 4.9c0-.66.54-1.2 1.2-1.2s1.2.54 1.2 1.2l-.01 3.91L15 10.6V5c0-1.66-1.34-3-3-3-1.54 0-2.79 1.16-2.96 2.65l1.76 1.76V4.9zM19 11h-1.7c0 .58-.1 1.13-.27 1.64l1.27 1.27c.44-.88.7-1.87.7-2.91zM4.41 2.86L3 4.27l6 6V11c0 1.66 1.34 3 3 3 .23 0 .44-.03.65-.08l1.66 1.66c-.71.33-1.5.52-2.31.52-2.76 0-5.3-2.1-5.3-5.1H5c0 3.41 2.72 6.23 6 6.72V21h2v-3.28c.91-.13 1.77-.45 2.55-.9l4.2 4.2 1.41-1.41L4.41 2.86z" />
+                            </svg>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="btnc">
+                    <div class="btn endcall">
+                        <div><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px"
+                                fill="#FFFFFF">
+                                <path d="M0 0h24v24H0V0z" fill="none" />
+                                <path
+                                    d="M18.59 10.52c1.05.51 2.04 1.15 2.96 1.91l-1.07 1.07c-.58-.47-1.21-.89-1.88-1.27v-1.71m-13.2 0v1.7c-.65.37-1.28.79-1.87 1.27l-1.07-1.07c.91-.75 1.9-1.38 2.94-1.9M12 7C7.46 7 3.34 8.78.29 11.67c-.18.18-.29.43-.29.71s.11.53.29.7l2.48 2.48c.18.18.43.29.71.29.27 0 .52-.1.7-.28.79-.73 1.68-1.36 2.66-1.85.33-.16.56-.51.56-.9v-3.1C8.85 9.25 10.4 9 12 9s3.15.25 4.59.73v3.1c0 .4.23.74.56.9.98.49 1.88 1.11 2.67 1.85.18.17.43.28.7.28.28 0 .53-.11.71-.29l2.48-2.48c.18-.18.29-.43.29-.71s-.11-.53-.29-.71C20.66 8.78 16.54 7 12 7z" />
+                            </svg></div>
+                    </div>
+                </div>
+                <div class="btnc">
+                    <div class="btn swvid">
+                        <div><svg xmlns="http://www.w3.org/2000/svg" class='unmutedvid' height="24px"
+                                viewBox="0 0 24 24" width="24px" fill="#FFFFFF">
+                                <path d="M0 0h24v24H0V0z" fill="none" />
+                                <path
+                                    d="M15 8v8H5V8h10m1-2H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4V7c0-.55-.45-1-1-1z" />
+                            </svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" style='display:none' class='mutedvid' height="24px"
+                                viewBox="0 0 24 24" width="24px" fill="#FFFFFF">
+                                <path d="M0 0h24v24H0V0z" fill="none" />
+                                <path
+                                    d="M9.56 8l-2-2-4.15-4.14L2 3.27 4.73 6H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.21 0 .39-.08.55-.18L19.73 21l1.41-1.41-8.86-8.86L9.56 8zM5 16V8h1.73l8 8H5zm10-8v2.61l6 6V6.5l-4 4V7c0-.55-.45-1-1-1h-5.61l2 2H15z" />
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="btnc">
+                    <div class="btn hand">
+                        <div>
+                            <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="24px"
+                                viewBox="0 0 24 24" width="24px" fill="#FFFFFF">
+                                <rect fill="none" height="24" width="24" />
+                                <path
+                                    d="M21,7c0-1.38-1.12-2.5-2.5-2.5c-0.17,0-0.34,0.02-0.5,0.05V4c0-1.38-1.12-2.5-2.5-2.5c-0.23,0-0.46,0.03-0.67,0.09 C14.46,0.66,13.56,0,12.5,0c-1.23,0-2.25,0.89-2.46,2.06C9.87,2.02,9.69,2,9.5,2C8.12,2,7,3.12,7,4.5v5.89 c-0.34-0.31-0.76-0.54-1.22-0.66L5.01,9.52c-0.83-0.23-1.7,0.09-2.19,0.83c-0.38,0.57-0.4,1.31-0.15,1.95l2.56,6.43 C6.49,21.91,9.57,24,13,24h0c4.42,0,8-3.58,8-8V7z M19,16c0,3.31-2.69,6-6,6h0c-2.61,0-4.95-1.59-5.91-4.01l-2.6-6.54l0.53,0.14 c0.46,0.12,0.83,0.46,1,0.9L7,15h2V4.5C9,4.22,9.22,4,9.5,4S10,4.22,10,4.5V12h2V2.5C12,2.22,12.22,2,12.5,2S13,2.22,13,2.5V12h2V4 c0-0.28,0.22-0.5,0.5-0.5S16,3.72,16,4v8h2V7c0-0.28,0.22-0.5,0.5-0.5S19,6.72,19,7L19,16z" />
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+                <div class="btnc">
+                    <div class="btn chat">
+                        <div><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px"
+                                fill="#FFFFFF">
+                                <path d="M0 0h24v24H0V0z" fill="none" />
+                                <path
+                                    d="M4 4h16v12H5.17L4 17.17V4m0-2c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2H4zm2 10h8v2H6v-2zm0-3h12v2H6V9zm0-3h12v2H6V6z" />
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+                <div class="btnc">
+                    <div class="btn people">
+                        <div><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px"
+                                fill="#FFFFFF">
+                                <path d="M0 0h24v24H0V0z" fill="none" />
+                                <path
+                                    d="M9 13.75c-2.34 0-7 1.17-7 3.5V19h14v-1.75c0-2.33-4.66-3.5-7-3.5zM4.34 17c.84-.58 2.87-1.25 4.66-1.25s3.82.67 4.66 1.25H4.34zM9 12c1.93 0 3.5-1.57 3.5-3.5S10.93 5 9 5 5.5 6.57 5.5 8.5 7.07 12 9 12zm0-5c.83 0 1.5.67 1.5 1.5S9.83 10 9 10s-1.5-.67-1.5-1.5S8.17 7 9 7zm7.04 6.81c1.16.84 1.96 1.96 1.96 3.44V19h4v-1.75c0-2.02-3.5-3.17-5.96-3.44zM15 12c1.93 0 3.5-1.57 3.5-3.5S16.93 5 15 5c-.54 0-1.04.13-1.5.35.63.89 1 1.98 1 3.15s-.37 2.26-1 3.15c.46.22.96.35 1.5.35z" />
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="sharescreen-c">
+                <div class="sharescreen">
+                    <div><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px"
+                            fill="#000000">
+                            <path d="M0 0h24v24H0V0z" fill="none" />
+                            <path
+                                d="M20 18c1.1 0 1.99-.9 1.99-2L22 6c0-1.11-.9-2-2-2H4c-1.11 0-2 .89-2 2v10c0 1.1.89 2 2 2H0v2h24v-2h-4zM4 16V6h16v10.01L4 16zm9-6.87c-3.89.54-5.44 3.2-6 5.87 1.39-1.87 3.22-2.72 6-2.72v2.19l4-3.74L13 7v2.13z" />
+                            </svg></div>
+                    <div id='sharescreentxt'>Share Screen</div>
+                </div>
+            </div>
+        </div>
+        <div class="videos-c">
+            <!--  
+
+            <div class="vi _ka' + peerID + '"><div class="vvi"><div class="etiquette"><div class="et"><div class="_et'+peerID+'"></div><div class="mutedaudsvg _ma'+peerID+'" style="display:none"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#FFFFFF"><path d="M0 0h24v24H0V0z" fill="none" /><path d="M10.8 4.9c0-.66.54-1.2 1.2-1.2s1.2.54 1.2 1.2l-.01 3.91L15 10.6V5c0-1.66-1.34-3-3-3-1.54 0-2.79 1.16-2.96 2.65l1.76 1.76V4.9zM19 11h-1.7c0 .58-.1 1.13-.27 1.64l1.27 1.27c.44-.88.7-1.87.7-2.91zM4.41 2.86L3 4.27l6 6V11c0 1.66 1.34 3 3 3 .23 0 .44-.03.65-.08l1.66 1.66c-.71.33-1.5.52-2.31.52-2.76 0-5.3-2.1-5.3-5.1H5c0 3.41 2.72 6.23 6 6.72V21h2v-3.28c.91-.13 1.77-.45 2.55-.9l4.2 4.2 1.41-1.41L4.41 2.86z" /></div><div class="mutedvidsvg _mv'+peerID+'" style="display:none"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#FFFFFF"><path d="M0 0h24v24H0V0z" fill="none" /><path d="M9.56 8l-2-2-4.15-4.14L2 3.27 4.73 6H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.21 0 .39-.08.55-.18L19.73 21l1.41-1.41-8.86-8.86L9.56 8zM5 16V8h1.73l8 8H5zm10-8v2.61l6 6V6.5l-4 4V7c0-.55-.45-1-1-1h-5.61l2 2H15z" /></svg></div></div></div><div class="vidd _aaa' + peerID + '"><video autoplay class="_' + peerID + '"></video></div></div></div>
+
+        -->
+
+        </div>
+        <div class="chatc-c">
+            <div class="chatc">
+                <!--div class="cel"><div class="celct">asdf</div><div class="celc">asdf</div></div-->
+            </div>
+            
+        </div>
+<div class="chatci">
+                <div class="chatcii">
+                    <select name="" id="chatselect" style="width:90%">
+                        <option value="e">Everyone</option>
+                    </select>
+                    <form class='chat-input'>
+                        <input class="autocomplete-off" autocomplete="off" readonly="true" type="text" name="chat"
+                            id="chat" placeholder='Enter Message...'>
+                    </form>
+                </div>
+            </div>
+        <div class="_people-c">
+            <div class="_people">
+            </div>
+        </div>
+
+
+    </div>
+
+    </div>
+    <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.7.0/firebase-app.js"></script>
+    <script src="https://unpkg.com/peerjs@1.3.1/dist/peerjs.min.js"></script>
+
+    <script src="https://www.gstatic.com/firebasejs/8.7.0/firebase-firestore.js"></script>
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+
+
+    <script src="https://www.gstatic.com/firebasejs/8.7.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.7.0/firebase-analytics.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.0.0/crypto-js.min.js"></script>
+
+    <script src="main.js"></script>
+</body>
+
+</html>
