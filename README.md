@@ -3,6 +3,7 @@ Somewhat of a google.meet clone but with peer2peer streams
 
 Choose who you want to speak to in a meeting, with an end-to-end encryption
 
+
 # Features
 #### Peer-to-peer
 #### You can decline a connection to a peer
@@ -19,6 +20,7 @@ Available at <a href="https://mcall.morisinc.net/build">morisinc.net</a>
 [Watch the video](https://cdn.morisinc.net/2022-07-11%2020-03-14.mp4)
 
 
+### No longer being maintained
 
 # License
 ```
